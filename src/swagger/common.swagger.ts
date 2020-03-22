@@ -34,3 +34,29 @@ export class PageInfo {
   @ApiProperty({ description: 'total data count' })
   count: number;
 }
+
+export class SuccessResponse {
+  @ApiProperty({ description: 'status code', default: 200 })
+  statusCode: number;
+
+  @ApiProperty({ description: 'error code' })
+  errorCode: string;
+
+  @ApiProperty({ description: 'message' })
+  message: string;
+}
+
+
+export class BadRequestResponse {
+  @ApiProperty({ description: 'status code', default: 400 })
+  statusCode: number;
+
+  @ApiProperty({ description: 'error code' })
+  errorCode: string;
+
+  @ApiProperty({ description: 'no data' })
+  data: string;
+
+  @ApiProperty({ description: 'message' })
+  message: string;
+}

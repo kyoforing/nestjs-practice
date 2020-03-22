@@ -4,7 +4,7 @@ export class ResponseHepler {
 
     constructor(statusCode: number, errorCode?: string) {
         this.statusCode = statusCode;
-        this.errorCode = errorCode || '0';
+        this.errorCode = errorCode || '00';
     }
 
     response (data?: any, message?: string) {

@@ -23,12 +23,12 @@ export class UserService {
     };
 
     //Get user count
-    const usersCountSql = knex('users').count({ count: 'id' });
+    const usersCountSql = knex('user').count({ count: 'id' });
     addUsersCondition(usersCountSql, q)
     const usersCount = await usersCountSql;
 
     //Get user list
-    const usersSql = knex('users')
+    const usersSql = knex('user')
       .select('id')
       .select('name')
       .select(knex.raw('UNIX_TIMESTAMP(createTime) * 1000 AS createTime'))
@@ -53,14 +53,82 @@ export class UserService {
     return result;
   }
 
+  async getUser(id): Promise<any> {
+    const UserClass = new UserDao(id);
+    const user = await UserClass.getUser();
+
+    if(!user) assertion(HttpStatus.BAD_REQUEST, 'user not found ', '01');
+    
+    return user;
+  }
+
   async addUser(body): Promise<any> {
     const { id, name } = body;
     const user = { id, name };
+    const UserClass = new UserDao(id);
+    const currentUser = await UserClass.getUser();
 
-    if (!id || id.length !== 10) assertion(HttpStatus.BAD_REQUEST, 'user id must be 10 characters', '01');
+    if(currentUser) assertion(HttpStatus.BAD_REQUEST, 'duplicate user', '02');
+    if (!id || id.length !== 10) assertion(HttpStatus.BAD_REQUEST, 'user id must be 10 characters', '03');
+    if (!name || name.length >= 10) assertion(HttpStatus.BAD_REQUEST, 'invalid name', '04');
 
-    await knex('users').insert(user);
+    await knex('user').insert(user);
 
     return user;
+  }
+
+  async updateUser(id, body): Promise<any> {
+    const { name } = body;
+    const UserClass = new UserDao(id);
+    const user = await UserClass.getUser();
+
+    if(!user) assertion(HttpStatus.BAD_REQUEST, 'user not found ', '01');
+    if (name) {
+      if (name.length >= 10) assertion(HttpStatus.BAD_REQUEST, 'invalid name', '04');
+      else await UserClass.updateUser({ name });
+    }
+    
+    return await UserClass.getUser();
+  }
+
+  async deleteUser(id): Promise<any> {
+    const UserClass = new UserDao(id);
+    const user = await UserClass.getUser();
+
+    if(!user) assertion(HttpStatus.BAD_REQUEST, 'user not found ', '01');
+
+    UserClass.deleteUser();
+    
+    return true;
+  }
+}
+
+class UserDao {
+  id: string;
+
+  constructor(id) {
+    this.id = id;
+  }
+
+  async getUser() {
+    return await knex('user')
+      .select('id')
+      .select('name')
+      .select(knex.raw('UNIX_TIMESTAMP(createTime) * 1000 AS createTime'))
+      .select(knex.raw('UNIX_TIMESTAMP(updateTime) * 1000 AS updateTime'))
+      .where('id', this.id)
+      .then(rows => rows.length > 0 ? rows[0] : null);
+  }
+
+  async updateUser(user) {
+    await knex('user')
+      .update(user)
+      .where('id', this.id);
+  }
+
+  async deleteUser() {
+    await knex('user')
+      .delete()
+      .where('id', this.id);
   }
 }

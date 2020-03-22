@@ -23,16 +23,47 @@ class UserList {
   list: User[];
 }
 
-export class GetUsersResponse {
-  @ApiProperty({ description: 'status code' })
-  statusCode: number;
+export const UserID = {
+  name: "id",
+  description: "User ID",
+  required: true,
+  type: String
+};
 
-  @ApiProperty({ description: 'error code' })
-  errorCode: string;
+export class CreateUserDto {
+  @ApiProperty({ description: 'user ID' })
+  id: string;
 
+  @ApiProperty({ description: 'user name' })
+  name: string;
+}
+
+export class UpdateUserDto {
+  @ApiProperty({ description: 'user name' })
+  name: string;
+}
+
+export class GetUsersResponse extends CommonApiDocs.SuccessResponse {
   @ApiProperty({ description: 'user list' })
   data: UserList;
+}
 
-  @ApiProperty({ description: 'message' })
-  message: string;
+export class GetUserResponse extends CommonApiDocs.SuccessResponse {
+  @ApiProperty({ description: 'user list' })
+  data: User;
+}
+
+export class AddUserResponse extends CommonApiDocs.SuccessResponse {
+  @ApiProperty({ description: 'user' })
+  data: CreateUserDto;
+}
+
+export class UpdateUserResponse extends CommonApiDocs.SuccessResponse {
+  @ApiProperty({ description: 'user' })
+  data: User;
+}
+
+export class DeleteUserResponse extends CommonApiDocs.SuccessResponse {
+  @ApiProperty({ description: 'user' })
+  data: string;
 }
