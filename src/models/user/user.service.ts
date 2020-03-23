@@ -11,6 +11,36 @@ const addUsersCondition = (sql, q) => {
   }
 }
 
+class UserDao {
+  id: string;
+
+  constructor(id) {
+    this.id = id;
+  }
+
+  async getUser() {
+    return await knex('user')
+      .select('id')
+      .select('name')
+      .select(knex.raw('UNIX_TIMESTAMP(createTime) * 1000 AS createTime'))
+      .select(knex.raw('UNIX_TIMESTAMP(updateTime) * 1000 AS updateTime'))
+      .where('id', this.id)
+      .then(rows => rows.length > 0 ? rows[0] : null);
+  }
+
+  async updateUser(user) {
+    await knex('user')
+      .update(user)
+      .where('id', this.id);
+  }
+
+  async deleteUser() {
+    await knex('user')
+      .delete()
+      .where('id', this.id);
+  }
+}
+
 @Injectable()
 export class UserService {
   async getUsers(query): Promise<any> {
@@ -85,7 +115,8 @@ export class UserService {
     if(!user) assertion(HttpStatus.BAD_REQUEST, 'user not found ', '01');
     if (name) {
       if (name.length >= 10) assertion(HttpStatus.BAD_REQUEST, 'invalid name', '04');
-      else await UserClass.updateUser({ name });
+      
+      await UserClass.updateUser({ name });
     }
     
     return await UserClass.getUser();
@@ -100,35 +131,5 @@ export class UserService {
     UserClass.deleteUser();
     
     return true;
-  }
-}
-
-class UserDao {
-  id: string;
-
-  constructor(id) {
-    this.id = id;
-  }
-
-  async getUser() {
-    return await knex('user')
-      .select('id')
-      .select('name')
-      .select(knex.raw('UNIX_TIMESTAMP(createTime) * 1000 AS createTime'))
-      .select(knex.raw('UNIX_TIMESTAMP(updateTime) * 1000 AS updateTime'))
-      .where('id', this.id)
-      .then(rows => rows.length > 0 ? rows[0] : null);
-  }
-
-  async updateUser(user) {
-    await knex('user')
-      .update(user)
-      .where('id', this.id);
-  }
-
-  async deleteUser() {
-    await knex('user')
-      .delete()
-      .where('id', this.id);
   }
 }

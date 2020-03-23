@@ -49,7 +49,7 @@ export class GetUsersResponse extends CommonApiDocs.SuccessResponse {
 }
 
 export class GetUserResponse extends CommonApiDocs.SuccessResponse {
-  @ApiProperty({ description: 'user list' })
+  @ApiProperty({ description: 'user information' })
   data: User;
 }
 
