@@ -15,10 +15,16 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  // it('/ (GET)', () => {
-  //   return request(app.getHttpServer())
-  //     .get('/')
-  //     .expect(200)
-  //     .expect('Hello World!');
-  // });
+  it('/v1/api/sum-of-age (GET)', (done) => {
+    return request(app.getHttpServer())
+      .get('/v1/api/sum-of-age')
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        const responseObj = JSON.parse(res.text);
+        expect(responseObj.data.result).toBe(18);
+
+        return done();
+      });
+  });
 });

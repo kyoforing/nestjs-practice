@@ -1,21 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserController } from './models/user/user.controller';
-import { UserService } from './models/user/services/user.service';
+import { ExamController } from './models/exam/exam.controller';
 
 describe('AppController', () => {
   let app: TestingModule;
 
   beforeAll(async () => {
     app = await Test.createTestingModule({
-      controllers: [UserController],
-      providers: [UserService],
+      controllers: [ExamController],
+      providers: [],
     }).compile();
   });
 
-  // describe('getHello', () => {
-  //   it('should return "Hello World!"', () => {
-  //     const appController = app.get<UserController>(UserController);
-  //     expect(appController.getUsers()).toBe('Hello World!');
-  //   });
-  // });
+  describe('Validate sum of age', () => {
+    it('should return 18', async () => {
+      const appController = app.get<ExamController>(ExamController);
+      const response = await appController.getSumOfAge();
+
+      expect(response.data.result).toBe(18);
+    });
+  });
 });
