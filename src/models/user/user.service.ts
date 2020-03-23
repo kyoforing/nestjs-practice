@@ -1,6 +1,6 @@
-import { knexInstance as knex } from '../../../config/knex';
+import { knexInstance as knex } from '../../config/knex';
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { assertion } from '../../../helper/assertion';
+import { assertion } from '../../helper/assertion';
 
 const addUsersCondition = (sql, q) => {
   if (q) {

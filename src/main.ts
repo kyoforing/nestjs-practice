@@ -19,8 +19,8 @@ async function bootstrap() {
 
   //swagger docs
   const options = new DocumentBuilder()
-    .setTitle('Wemo API')
-    .setDescription('demo APIs')
+    .setTitle('Demo API')
+    .setDescription('Just demo')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, options);

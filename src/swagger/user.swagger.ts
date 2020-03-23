@@ -9,10 +9,10 @@ export class User {
   name: string;
   
   @ApiProperty({ description: 'create time of user' })
-  createTime: Number;
+  createTime: number;
   
   @ApiProperty({ description: 'last update time of user' })
-  updateTime: Number;
+  updateTime: number;
 }
 
 class UserList {

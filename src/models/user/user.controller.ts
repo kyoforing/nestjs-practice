@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Put, Delete, Query, Body, Param } from '@nestjs/common';
-import { UserService } from './services/user.service';
+import { UserService } from './user.service';
 import { ResponseHepler, ResponseFormat } from '../../helper/format';
 import { ApiResponse, ApiCreatedResponse, ApiTags, ApiQuery, ApiBody, ApiParam } from '@nestjs/swagger';
 import * as UserApiDocs from '../../swagger/user.swagger';
@@ -67,7 +67,7 @@ export class UserController {
   @ApiParam(UserApiDocs.UserID)
   @ApiResponse({ status: 200, description: 'The record has been successfully deleted.', type: UserApiDocs.DeleteUserResponse})
   @ApiResponse({ status: 400, description: 'Bad Request', type: CommonApiDocs.BadRequestResponse})
-  async deleteUser(@Param() params, @Body() body): Promise<ResponseFormat> {
+  async deleteUser(@Param() params): Promise<ResponseFormat> {
     await this.userService.deleteUser(params.id);
     const responseHelper = new ResponseHepler(successStatusCode());
 
