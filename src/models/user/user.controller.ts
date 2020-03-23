@@ -40,10 +40,10 @@ export class UserController {
   @Post('/v1/api/user')
   @ApiTags('User')
   @ApiBody({ type: UserApiDocs.CreateUserDto })
-  @ApiCreatedResponse({ description: 'The record has been successfully created.', type: UserApiDocs.AddUserResponse})
+  @ApiCreatedResponse({ description: 'The record has been successfully created.', type: UserApiDocs.CreateUserResponse})
   @ApiResponse({ status: 400, description: 'Bad Request', type: CommonApiDocs.BadRequestResponse})
-  async addUser(@Body() body): Promise<ResponseFormat> {
-    const user = await this.userService.addUser(body);
+  async createUser(@Body() body): Promise<ResponseFormat> {
+    const user = await this.userService.createUser(body);
     const responseHelper = new ResponseHepler(successStatusCode());
 
     return responseHelper.response(user);

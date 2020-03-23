@@ -19,10 +19,10 @@ export class ScooterController {
   @ApiResponse({ status: 200, description: 'Scooter list', type: ScooterApiDocs.GetScootersResponse})
   @ApiResponse({ status: 400, description: 'Bad Request', type: CommonApiDocs.BadRequestResponse})
   async getScooters(@Query() params): Promise<ResponseFormat> {
-    const Scooters = await this.scooterService.getScooters(params);
+    const scooters = await this.scooterService.getScooters(params);
     const responseHelper = new ResponseHepler(successStatusCode());
 
-    return responseHelper.response(Scooters);
+    return responseHelper.response(scooters);
   }
 
   @Get('/v1/api/scooter/:id')
@@ -31,22 +31,22 @@ export class ScooterController {
   @ApiResponse({ status: 200, description: 'Scooter information', type: ScooterApiDocs.GetScooterResponse})
   @ApiResponse({ status: 400, description: 'Bad Request', type: CommonApiDocs.BadRequestResponse})
   async getScooter(@Param() params): Promise<ResponseFormat> {
-    const Scooter = await this.scooterService.getScooter(params.id);
+    const scooter = await this.scooterService.getScooter(params.id);
     const responseHelper = new ResponseHepler(successStatusCode());
 
-    return responseHelper.response(Scooter);
+    return responseHelper.response(scooter);
   }
 
   @Post('/v1/api/scooter')
   @ApiTags('Scooter')
   @ApiBody({ type: ScooterApiDocs.CreateScooterDto })
-  @ApiCreatedResponse({ description: 'The record has been successfully created.', type: ScooterApiDocs.AddScooterResponse})
+  @ApiCreatedResponse({ description: 'The record has been successfully created.', type: ScooterApiDocs.CreateScooterResponse})
   @ApiResponse({ status: 400, description: 'Bad Request', type: CommonApiDocs.BadRequestResponse})
-  async addScooter(@Body() body): Promise<ResponseFormat> {
-    const Scooter = await this.scooterService.addScooter(body);
+  async createScooter(@Body() body): Promise<ResponseFormat> {
+    const scooter = await this.scooterService.createScooter(body);
     const responseHelper = new ResponseHepler(successStatusCode());
 
-    return responseHelper.response(Scooter);
+    return responseHelper.response(scooter);
   }
 
   @Put('/v1/api/scooter/:id')
@@ -56,10 +56,10 @@ export class ScooterController {
   @ApiResponse({ status: 200, description: 'The record has been successfully updated.', type: ScooterApiDocs.UpdateScooterResponse})
   @ApiResponse({ status: 400, description: 'Bad Request', type: CommonApiDocs.BadRequestResponse})
   async updateScooter(@Param() params, @Body() body): Promise<ResponseFormat> {
-    const Scooter = await this.scooterService.updateScooter(params.id, body);
+    const scooter = await this.scooterService.updateScooter(params.id, body);
     const responseHelper = new ResponseHepler(successStatusCode());
 
-    return responseHelper.response(Scooter);
+    return responseHelper.response(scooter);
   }
 
   @Delete('/v1/api/scooter/:id')

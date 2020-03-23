@@ -27,7 +27,7 @@ export const ScooterID = {
   name: "id",
   description: "Scooter ID",
   required: true,
-  type: String
+  type: Number
 };
 
 export class CreateScooterDto {
@@ -50,7 +50,7 @@ export class GetScooterResponse extends CommonApiDocs.SuccessResponse {
   data: Scooter;
 }
 
-export class AddScooterResponse extends CommonApiDocs.SuccessResponse {
+export class CreateScooterResponse extends CommonApiDocs.SuccessResponse {
   @ApiProperty({ description: 'scooter' })
   data: Scooter;
 }

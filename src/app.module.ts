@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { MorganModule, MorganInterceptor } from 'nest-morgan';
-import { UserModule, ScooterModule, ExamModule } from './models';
+import { UserModule, ScooterModule, OrderModule, ExamModule } from './models';
 @Module({
   imports: [
     MorganModule.forRoot(),
     UserModule,
     ScooterModule,
+    OrderModule,
     ExamModule,
   ],
   providers: [

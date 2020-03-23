@@ -17,7 +17,7 @@ class ScooterDao {
       .select(knex.raw('UNIX_TIMESTAMP(createTime) * 1000 AS createTime'))
       .select(knex.raw('UNIX_TIMESTAMP(updateTime) * 1000 AS updateTime'));
 
-    if (!condition) condition = { column: 'default', value: 0 };    
+    if (!condition) condition = { column: 'default', value: 0 };
     switch (condition.column) {
       case 'id': return await this.getScooterById(condition.value);
       case 'plateNo': return await this.getScooterByPlateNo(condition.value);
@@ -100,7 +100,7 @@ export class ScooterService {
     return scooter;
   }
 
-  async addScooter(body): Promise<any> {
+  async createScooter(body): Promise<any> {
     const { plateNo } = body;
     const scooter = { plateNo };
     const ScooterClass = new ScooterDao(0);
@@ -125,8 +125,8 @@ export class ScooterService {
       const currentScooter = await ScooterClass.getScooter({ column: 'plateNo', value: plateNo });
 
       if (currentScooter) assertion(HttpStatus.BAD_REQUEST, 'duplicate scooter', '02');
-      if (plateNo.length >= 10) assertion(HttpStatus.BAD_REQUEST, 'invalid name', '04');      
-      
+      if (plateNo.length >= 10) assertion(HttpStatus.BAD_REQUEST, 'invalid name', '04');
+
       await ScooterClass.updateScooter({ plateNo });
     }
 

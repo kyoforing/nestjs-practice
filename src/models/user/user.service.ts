@@ -2,7 +2,7 @@ import { knexInstance as knex } from '../../config/knex';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { assertion } from '../../helper/assertion';
 
-const addUsersCondition = (sql, q) => {
+const createUsersCondition = (sql, q) => {
   if (q) {
     sql.where(function () {
       this.where('id', 'like', `%${q}%`);
@@ -54,7 +54,7 @@ export class UserService {
 
     //Get user count
     const usersCountSql = knex('user').count({ count: 'id' });
-    addUsersCondition(usersCountSql, q)
+    createUsersCondition(usersCountSql, q)
     const usersCount = await usersCountSql;
 
     //Get user list
@@ -63,7 +63,7 @@ export class UserService {
       .select('name')
       .select(knex.raw('UNIX_TIMESTAMP(createTime) * 1000 AS createTime'))
       .select(knex.raw('UNIX_TIMESTAMP(updateTime) * 1000 AS updateTime'));
-    addUsersCondition(usersSql, q);
+    createUsersCondition(usersSql, q);
 
     if (page) {
       pageInfo.count = usersCount.length > 0 ? usersCount[0].count : 0;
@@ -92,7 +92,7 @@ export class UserService {
     return user;
   }
 
-  async addUser(body): Promise<any> {
+  async createUser(body): Promise<any> {
     const { id, name } = body;
     const user = { id, name };
     const UserClass = new UserDao(id);
