@@ -103,11 +103,12 @@ export class ScooterService {
   async createScooter(body): Promise<any> {
     const { plateNo } = body;
     const scooter = { plateNo };
+
+    if (!plateNo || plateNo.length >= 10) assertion(HttpStatus.BAD_REQUEST, 'invalid plate number', '04');
+
     const ScooterClass = new ScooterDao(0);
     const currentScooter = await ScooterClass.getScooter({ column: 'plateNo', value: plateNo });
-
     if (currentScooter) assertion(HttpStatus.BAD_REQUEST, 'duplicate scooter', '02');
-    if (!plateNo || plateNo.length >= 10) assertion(HttpStatus.BAD_REQUEST, 'invalid plate number', '04');
 
     const id = await knex('Scooter').insert(scooter)
       .then(rows => rows.length > 0 ? rows[0] : null);

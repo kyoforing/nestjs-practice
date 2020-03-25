@@ -95,12 +95,14 @@ export class UserService {
   async createUser(body): Promise<any> {
     const { id, name } = body;
     const user = { id, name };
+
+    if (!id || id.length !== 10) assertion(HttpStatus.BAD_REQUEST, 'user id must be 10 characters', '03');
+    if (!name || name.length >= 10) assertion(HttpStatus.BAD_REQUEST, 'invalid name', '04');
+
     const UserClass = new UserDao(id);
     const currentUser = await UserClass.getUser();
 
     if(currentUser) assertion(HttpStatus.BAD_REQUEST, 'duplicate user', '02');
-    if (!id || id.length !== 10) assertion(HttpStatus.BAD_REQUEST, 'user id must be 10 characters', '03');
-    if (!name || name.length >= 10) assertion(HttpStatus.BAD_REQUEST, 'invalid name', '04');
 
     await knex('user').insert(user);
 

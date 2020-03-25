@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Put, Query, Param, Body } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { ResponseHepler, ResponseFormat } from '../../helper/format';
-import { ApiParam, ApiResponse, ApiCreatedResponse, ApiTags, ApiQuery } from '@nestjs/swagger';
+import { ApiParam, ApiResponse, ApiCreatedResponse, ApiTags, ApiBody, ApiQuery } from '@nestjs/swagger';
 import * as OrderApiDocs from '../../swagger/order.swagger';
 import * as CommonApiDocs from '../../swagger/common.swagger';
 
@@ -39,6 +39,7 @@ export class OrderController {
 
   @Post('/v1/api/order')
   @ApiTags('Order')
+  @ApiBody({ type: OrderApiDocs.CreateOrderDto })
   @ApiCreatedResponse({ description: 'The order has been successfully created.', type: OrderApiDocs.CreateOrderResponse})
   @ApiResponse({ status: 400, description: 'Bad Request', type: CommonApiDocs.BadRequestResponse})
   async addOrder(@Body() body): Promise<ResponseFormat> {

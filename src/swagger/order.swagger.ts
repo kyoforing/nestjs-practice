@@ -24,6 +24,14 @@ export class Order {
   updateTime: number;
 }
 
+export class CreateOrderDto {
+  @ApiProperty({ description: 'user id' })
+  userId: string;
+ 
+  @ApiProperty({ description: 'scooter id' })
+  scooterId: number;
+}
+
 class OrderList {
   @ApiProperty({ description: 'page information' })
   page: CommonApiDocs.PageInfo;
